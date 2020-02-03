@@ -3,18 +3,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { MatSnackBar } from '@angular/material'
 import { Router } from '@angular/router'
 
-import { CadastroPj } from '../../models';
-import { CpfValidator } from '../../../../shared/validators'
-import { CnpjValidator } from '../../../../shared/validators'
+import { CpfValidator, CnpjValidator } from '../../../../shared/validators'
 
-import { CadastroPjService } from '../../services'
+import { CadastroPf } from '../../models'
+import { CadastrarPfService } from '../../services'
 
 @Component({
-  selector: 'app-cadastrar-pj',
-  templateUrl: './cadastrar-pj.component.html',
-  styleUrls: ['./cadastrar-pj.component.css']
+  selector: 'app-cadastrar-pf',
+  templateUrl: './cadastrar-pf.component.html',
+  styleUrls: ['./cadastrar-pf.component.css']
 })
-export class CadastrarPjComponent implements OnInit {
+export class CadastrarPfComponent implements OnInit {
 
   form: FormGroup
 
@@ -22,11 +21,11 @@ export class CadastrarPjComponent implements OnInit {
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private router: Router,
-    private cadastrarPjService: CadastroPjService
+    private cadastrarpfService: CadastrarPfService
   ) { }
 
   ngOnInit() {
-    this.gerarForm()
+    this.gerarForm();
   }
 
   gerarForm(){
@@ -35,28 +34,26 @@ export class CadastrarPjComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(6)]],
       cpf: ['', [Validators.required, CpfValidator]],
-      razaoSocial: ['', [Validators.required, Validators.minLength(5)]],
-      cnpj: ['', [Validators.required, CnpjValidator]]
+      cnpj: ['', [Validators.required, CnpjValidator]],
     })
   }
 
-  cadastrarPj(){
-    if (this.form.invalid){
+  cadastrarpf(){
+    if(this.form.invalid){
       return
     }
-    const cadastroPj: CadastroPj = this.form.value
-    this.cadastrarPjService.cadastrar(cadastroPj)
+
+    const cadastroPf: CadastroPf = this.form.value
+    this.cadastrarpfService.cadastrar(cadastroPf)
       .subscribe(
         data => {
-          console.log(JSON.stringify(data));
-          const msg: string = "Realize o login para acessar o sistema."
+          const msg: string = "Realize o sistema para acessar o sistema"
           this.snackBar.open(msg, "Sucesso", { duration: 5000 })
           this.router.navigate(['/login'])
         },
         err => {
-          console.log(JSON.stringify(err))
-          let msg: string  = "Tente novamente em instantes."
-          if (err.status === 400){
+          let msg: string = "Tente novamente em instantes."
+          if (err.status == 400) {
             msg = err.error.errors.join(' ')
           }
           this.snackBar.open(msg, "Erro", { duration: 5000 })
@@ -64,4 +61,5 @@ export class CadastrarPjComponent implements OnInit {
       )
     return false
   }
+
 }

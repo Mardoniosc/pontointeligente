@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { RouterModule } from '@angular/router';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { RouterModule } from '@angular/router'
+import { FlexLayoutModule } from '@angular/flex-layout'
 import { ReactiveFormsModule } from '@angular/forms'
-import { HttpClientModule } from '@angular/common/http'
 
 import {
   MatInputModule,
@@ -12,35 +10,42 @@ import {
   MatListModule,
   MatTooltipModule,
   MatIconModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatCardModule,
 } from '@angular/material'
 
-import { CadastrarPjComponent, CadastroPjComponent } from './components';
-import { CadastroPjService } from './services';
+import {
+  ListagemComponent,
+  LancamentoComponent,
+  FuncionarioComponent
+} from './components'
 
-import { SharedModule } from '../../shared/shared.module';
+
 
 @NgModule({
   declarations: [
-    CadastrarPjComponent,
-    CadastroPjComponent
+    ListagemComponent,
+    LancamentoComponent,
+    FuncionarioComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     FlexLayoutModule,
     ReactiveFormsModule,
-    HttpClientModule,
     MatInputModule,
     MatButtonModule,
     MatListModule,
     MatTooltipModule,
     MatIconModule,
     MatSnackBarModule,
-    SharedModule
-  ],
-  providers: [
-    CadastroPjService
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatCardModule,
   ]
 })
-export class CadastroPjModule { }
+export class FuncionarioModule { }
