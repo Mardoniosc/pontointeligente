@@ -98,9 +98,6 @@ export class LancamentoComponent implements OnInit {
           this.snackBar.open(msg, "Erro", { duration: 5000 })
         }
       )
-
-  	alert(`Tipo: ${tipo}, dataAtualEn: ${this.dataAtualEn},
-  		geolocation: ${this.geoLocation}`);
   }
 
   obterUrlMapa(): string {
