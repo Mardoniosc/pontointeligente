@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
 import {
-  Tipo
+  Tipo, HttpUtilService, LancamentoService, Lancamento
 } from '../../../shared';
 
 import * as moment from 'moment';
@@ -25,7 +25,10 @@ export class LancamentoComponent implements OnInit {
 
   constructor(
   	private snackBar: MatSnackBar,
-    private router: Router) { }
+    private router: Router,
+    private httpUltil: HttpUtilService,
+    private lancamentoService: LancamentoService
+    ) { }
 
   ngOnInit() {
   	this.dataAtual = moment().format('DD/MM/YYYY HH:mm:ss');
@@ -60,10 +63,42 @@ export class LancamentoComponent implements OnInit {
   }
 
   obterUltimoLancamento() {
-    this.ultimoTipoLancado = '';
+    this.lancamentoService.buscarUltimoTipoLancado()
+      .subscribe(
+        data => {
+          this.ultimoTipoLancado = data.data ? data.data.tipo : ''
+        },
+        err => {
+          const msg: string = "Erro obtendo último lançamento."
+          this.snackBar.open(msg, "Erro", { duration: 5000 })
+        }
+      )
   }
 
   cadastrar(tipo: Tipo) {
+    const lancamento: Lancamento = new Lancamento(
+      this.dataAtualEn,
+      tipo,
+      this.geoLocation,
+      this.httpUltil.obterIdUsuario()
+    )
+
+    this.lancamentoService.cadastrar(lancamento)
+      .subscribe(
+        data => {
+          const msg: string = "Lançamento realizado com sucesso!"
+          this.snackBar.open(msg, "Sucesso", { duration: 5000 })
+          this.router.navigate(['/funcionario/listagem'])
+        },
+        err => {
+          let msg: string = "Tente novamente em instantes"
+          if (err.status === 400){
+            msg = err.error.errors.join(' ')
+          }
+          this.snackBar.open(msg, "Erro", { duration: 5000 })
+        }
+      )
+
   	alert(`Tipo: ${tipo}, dataAtualEn: ${this.dataAtualEn},
   		geolocation: ${this.geoLocation}`);
   }
@@ -74,7 +109,7 @@ export class LancamentoComponent implements OnInit {
   }
 
   exibirInicioTrabalho(): boolean {
-  	return this.ultimoTipoLancado == '' ||
+    return this.ultimoTipoLancado == '' ||
   		this.ultimoTipoLancado == Tipo.TERMINO_TRABALHO;
   }
 
