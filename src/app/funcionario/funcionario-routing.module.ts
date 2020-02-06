@@ -7,9 +7,12 @@ import {
   ListagemComponent
  } from './components'
 
+ import { AuthGuardService } from '../shared'
+
 export const FuncionarioRoutes: Routes  = [
   {
     path: 'funcionario',
+    canActivate: [ AuthGuardService ],
     component: FuncionarioComponent,
     children:[
       { path: '', component: LancamentoComponent },

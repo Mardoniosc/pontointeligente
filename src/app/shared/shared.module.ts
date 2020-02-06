@@ -4,7 +4,7 @@ import { MascaraDirective } from './directives/mascara.directive';
 
 import { MatPaginator } from '@angular/material'
 
-import { PtBrMatPaginatorIntl, TipoPipe, DataPipe } from './';
+import { PtBrMatPaginatorIntl, TipoPipe, DataPipe, AuthGuardService } from './';
 
 @NgModule({
   declarations: [
@@ -20,6 +20,6 @@ import { PtBrMatPaginatorIntl, TipoPipe, DataPipe } from './';
     TipoPipe,
     DataPipe
   ],
-  providers: [ PtBrMatPaginatorIntl ]
+  providers: [ PtBrMatPaginatorIntl, AuthGuardService ]
 })
 export class SharedModule { }
